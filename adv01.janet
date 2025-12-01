@@ -1,8 +1,7 @@
 (def data
-  (peg/match ~(some (group (* (+ (/ "L" :left) (/ "R" :right))
-                              (number :d+)
-                              "\n")))
-              (slurp "adv01.txt")))
+  (with [f (file/open "adv01.txt")]
+        (map |(peg/match ~(* (+ (/ "L" :left) (/ "R" :right)) (number :d+)) $)
+             (file/lines f))))
 
 # 0x434C49434B ~ "CLICK"
 
