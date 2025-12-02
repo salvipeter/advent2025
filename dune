@@ -1,3 +1,7 @@
 (executable
   (name adv01)
   (libraries containers))
+
+(executable
+  (name adv02)
+  (libraries containers))
