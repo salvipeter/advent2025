@@ -1,12 +1,9 @@
 open Containers
 
-let parse s =
-  let parse_range range = Scanf.sscanf range "%d-%d" (fun a b -> (a, b)) in
-  String.split_on_char ',' s |> List.map parse_range
-
 let data =
+  let parse range = Scanf.sscanf range "%d-%d" (fun a b -> (a,b)) in
   In_channel.with_open_text "adv02.txt" In_channel.input_all
-  |> String.trim |> parse
+  |> String.trim |> String.split_on_char ',' |> List.map parse
 
 let part1 n =
   let s = string_of_int n in
