@@ -1,5 +1,3 @@
-open Containers
-
 let data =
   let parse range = Scanf.sscanf range "%d-%d" (fun a b -> (a,b)) in
   In_channel.with_open_text "adv02.txt" In_channel.input_all

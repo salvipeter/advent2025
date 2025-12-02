@@ -1,5 +1,3 @@
-open Containers
-
 type combination = Left of int | Right of int
 
 let parse str =
