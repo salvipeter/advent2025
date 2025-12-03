@@ -1,4 +1,4 @@
 (executables
-  (names adv01 adv02)
+  (names adv01 adv02 adv03)
   (libraries containers)
   (flags (:standard -open Containers)))
