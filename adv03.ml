@@ -4,15 +4,14 @@ let data =
   |> List.map Fun.(String.to_list %> List.map digit)
 
 let activation batteries bank =
-  let rec aux acc xs k =
-    if k < 0 then
-      acc
-    else
-      let m = List.reduce_exn max (List.rev xs |> List.drop k) in
-      let xs' = List.drop_while ((<>) m) xs |> List.tl in
-      aux (acc * 10 + m) xs' (k - 1)
+  let rec aux acc xs = function
+    | 0 -> acc
+    | k -> let candidates = List.rev xs |> List.drop (k - 1) in
+           let m = List.reduce_exn max candidates in
+           let xs' = List.drop_while ((<>) m) xs |> List.tl in
+           aux (acc * 10 + m) xs' (k - 1)
   in
-  aux 0 bank (batteries - 1)
+  aux 0 bank batteries
 
 let joltage batteries banks =
   List.map (activation batteries) banks |> List.fold_left (+) 0
