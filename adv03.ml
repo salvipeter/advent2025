@@ -1,7 +1,7 @@
 let data =
   let digit c = Char.code c - Char.code '0' in
   In_channel.with_open_text "adv03.txt" In_channel.input_lines
-  |> List.map CCFun.(String.to_list %> List.map digit)
+  |> List.map Fun.(String.to_list %> List.map digit)
 
 let activation batteries bank =
   let rec aux acc xs k =
