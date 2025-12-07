@@ -1,4 +1,7 @@
+;;; -*- mode: lisp -*-
+
 (executables
-  (names adv01 adv02 adv03 adv04 adv05 adv06)
+  (names adv01 adv02 adv03 adv04 adv05 adv06
+         adv07)
   (libraries containers)
   (flags (:standard -open Containers)))
