@@ -8,14 +8,12 @@ let count_beams rows part2 =
     | (Some result, _) -> if part2 then result else 0
     | (None, []) -> 0
     | (None, row::rest) when i >= 0 && i < String.length row ->
-       let result =
-         if Char.equal row.[i] '^' then
-           1 + aux rows (i - 1) j + aux rows (i + 1) j
-         else
-           aux rest i (j + 1)
-       in
-       Hashtbl.add cache (i, j) result;
-       result
+       if Char.equal row.[i] '^' then
+         let result = 1 + aux rows (i - 1) j + aux rows (i + 1) j in
+         Hashtbl.add cache (i, j) result;
+         result
+       else
+         aux rest i (j + 1)
     | (None, _) -> 0
   in
   let start = String.index (List.hd rows) 'S' in
