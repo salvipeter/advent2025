@@ -1,0 +1,46 @@
+Day 8
+-----
+Part 2 is not completely general. For example, for the data
+
+0,0
+8,0
+8,2
+3,2
+3,7
+0,7
+
+i.e.,
+
+X--X
+|..|
+|..|
+|..|
+|..|
+|..X----X
+|.......|
+X-------X
+
+it gives 36 for this rectangle:
+
+X--O#####
+|..######
+|..######
+|..######
+|..######
+|..#####O
+|.......|
+X-------X
+
+... instead of 32 for this one:
+
+###O
+####
+####
+####
+####
+####----X
+####....|
+O###----X
+
+But it is easy to see from a visualization of the data (see adv09-extra.png)
+that these cases do not occur in the actual problem.
