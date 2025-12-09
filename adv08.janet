@@ -40,6 +40,6 @@
         connections))
 
 (let [sorted-pairs (sort (pair-dists data))]
-  (print (->> (take 1000 sorted-pairs) (connect-pairs)
-              (map length) (sort) (reverse) (take 3) (product)))
+  (print (->> (take 1000 sorted-pairs) connect-pairs
+              (map length) sort reverse (take 3) product))
   (print (product (map |((data $) 0) (last-pair (length data) sorted-pairs)))))
