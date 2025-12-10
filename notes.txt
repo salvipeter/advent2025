@@ -1,4 +1,4 @@
-Day 8
+Day 9
 -----
 Part 2 is not completely general. For example, for the data
 
@@ -44,3 +44,125 @@ O###----X
 
 But it is easy to see from a visualization of the data (see adv09-extra.png)
 that these cases do not occur in the actual problem.
+
+
+Day 10
+------
+
+In Part 2, a simple greedy algorithm won't work, as can be seen from the example
+
+(0,1) (0,2) (1,2) {5,3,4}
+
+for which a solution is [2,3,1] -> 6.
+
+On the other hand, in this example - assuming that there _is_ a solution -,
+the solution is evident, since all buttons increase 2 values,
+so it must be (5+3+4)/2 = 6.
+
+This problem can be thought of as finding the minimum (L1-)norm
+solution of a linear system of equations where the values can only be
+non-negative integers.
+
+For example in the first example we have
+
+                x1
+0 0 0 0 1 1     x2     3
+0 1 0 0 0 1  X  x3  =  5
+0 0 1 1 1 0     x4     4
+1 1 0 1 0 0     x5     7
+                x6
+
+i.e.,
+
+                    x5 + x6 = 3
+     x2        +         x6 = 5
+          x3 + x4 + x5      = 4
+x1 + x2   +    x4           = 7
+
+and the solution is (e.g.) [1,3,0,3,1,2], whose sum is 10.
+
+Following Gilbert & Pathria's "Linear Diophantine Equations" (1990),
+solving A X = B can be done by first reducing [A^t|I] into row-echelon
+form [R|T] using unimodular row reductions. Then R^t K = B is easily
+solved, and all solutions are of the form X = T^t K.
+
+When the last rows of R are zero, this means that we can choose the
+corresponding coefficients arbitrarily, thereby possibly minimizing the sum.
+
+In the example above, from
+
+          0 0 0 1 | 1 0 0 0 0 0
+          0 1 0 1 | 0 1 0 0 0 0
+[A^t|I] = 0 0 1 0 | 0 0 1 0 0 0
+          0 0 1 1 | 0 0 0 1 0 0
+          1 0 1 0 | 0 0 0 0 1 0
+          1 1 0 0 | 0 0 0 0 0 1
+
+we have the reduction
+
+        1 0 1 0 | 0 0 0 0 1 0
+        0 1 0 1 | 0 1 0 0 0 0
+[R|T] = 0 0 1 0 | 0 0 1 0 0 0
+        0 0 0 1 | 1 0 0 0 0 0
+        0 0 0 0 | - 0 - 1 0 0
+        0 0 0 0 | 0 - 0 1 - 1
+
+where "-" means "-1".
+
+Then we should solve
+
+                a
+1 0 0 0 0 0     b     3
+0 1 0 0 0 0  x  c  =  5
+1 0 1 0 0 0     d     4
+0 1 0 1 0 0     e     7
+                f
+
+(Note that the right-hand side is the same even if there were swaps during reduction.)
+
+Since this is a lower triangular matrix, we easily get [3,5,1,2,_,_],
+where the last two values can be arbitrarily set. First let us set them to 0.
+
+The solutions will be of the form
+
+    0 0 0 1 - 0     3     2
+    0 1 0 0 0 -     5     5
+X = 0 0 1 0 - 0  x  1  =  1
+    0 0 0 0 1 1     2     0
+    1 0 0 0 0 -     0     3
+    0 0 0 0 0 1     0     0
+            ^ ^
+            e f
+
+Now looking at the columns of T^t marked with "e" and "f", we can see that increasing "e"
+will decrease the sum by 1, while increasing "f" leaves the sum unchanged.
+
+We can set "e" to at most 1, since it decreases the third coefficient, which is already 1.
+This results in [1,5,0,1,3,0], an optimal solution with sum 10 (but different from the one above).
+(Setting f = 2 gives the "official" solution.)
+
+Possible complications:
+- >1 pivots may appear during reduction, handling those requires the extended Euclidean algorithm
+- the "default" solution may include negative numbers
+- there may be two or more arbitrarily set coefficients with sum-decreasing effect
+
+Data analysis:
+- at most 13 buttons
+- at most 10 joltages
+- maximum joltage is 271
+- maximum joltage sum is 1980
+
+Currently my implementation is brute force, with some "tricks":
+- try buttons that change more joltages first
+- when only one button changes a joltage, push the button as many times as needed
+- otherwise try downwards from the limit (more than which would make another joltage too large)
+- prune branches where:
+  - the current solution is already longer than the best one
+  - there are multiple joltages that are only changed by the current button,
+    but they need to be adjusted differently
+  - there is a joltage that is only changed by the current button,
+    but it needs to be adjusted more than the limit
+  - there is a joltage that is not reached yet but no button changes it
+
+This is reasonably fast except for those with maximal number of buttons/joltages
+and large joltage values. But overall it is _very_ slow, even in OCaml.
