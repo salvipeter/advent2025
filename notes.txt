@@ -175,8 +175,15 @@ This problem seemed too hard to solve generally, especially looking at the actua
 most trees need more than 200 presents!
 
 A very simple test is to see if there are enough "units" in the given rectangle.
-This is obviously an upper limit, since it does _not_ work for the official example:
+This is obviously an upper limit, since it does _not_ work for the last official example:
 there we have 12x5 = 60 units, and we need 7*7 = 49 units (all shapes in the example
 consist of 7 units, and 1+0+1+0+3+2 = 7).
 
 Still, I gave it a try... and it worked! A bit of a letdown though.
+
+Post mortem I also checked another trivial condition: when there as many 3x3 blocks
+as there are presents, it is evidently solvable. Turns out that all "maybe" cases
+belong to this category, so there are no ambiguities.
+
+So even if the last example was a dirty trick, at least my solution is provably good,
+which puts my mind at ease.
