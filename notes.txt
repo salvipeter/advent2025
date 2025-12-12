@@ -166,3 +166,17 @@ Currently my implementation is brute force, with some "tricks":
 
 This is reasonably fast except for those with maximal number of buttons/joltages
 and large joltage values. But overall it is _very_ slow, even in OCaml.
+
+
+Day 12
+------
+
+This problem seemed too hard to solve generally, especially looking at the actual data:
+most trees need more than 200 presents!
+
+A very simple test is to see if there are enough "units" in the given rectangle.
+This is obviously an upper limit, since it does _not_ work for the official example:
+there we have 12x5 = 60 units, and we need 7*7 = 49 units (all shapes in the example
+consist of 7 units, and 1+0+1+0+3+2 = 7).
+
+Still, I gave it a try... and it worked! A bit of a letdown though.
